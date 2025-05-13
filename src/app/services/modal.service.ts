@@ -20,6 +20,10 @@ export class ModalService {
       },
     ]);
   }
+  unregister(id: string) {
+    this.modals.set(this.modals().filter((element) => element.id !== id));
+  }
+
   toggle(id: string) {
     const modal = this.modals().find((item) => item.id === id);
     if (!modal) return;
