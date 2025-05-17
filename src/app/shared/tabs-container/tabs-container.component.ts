@@ -26,3 +26,6 @@ export class TabsContainerComponent implements AfterContentInit {
     return false;
   }
 }
+
+
+
