@@ -1,5 +1,5 @@
 <!-- Registration Form -->
-<form>
+<form [formGroup]="form">
   <!-- Name -->
   <div class="mb-3">
     <label class="inline-block mb-2">Name</label>
@@ -7,6 +7,27 @@
       type="text"
       class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
       placeholder="Enter Name"
+      formControlName="name"
+      minlength="3"
+    />
+    @if (form.controls.name.hasError("required")) {
+    <p class="text-red-400">Field is required.</p>
+    } @if (form.controls.name.hasError("minlength")) {
+    <p class="text-red-400">
+      The value you inputted in
+      {{ form.controls.name.getError("minlength").actualLength }} characters
+      long. It must be at least
+      {{ form.controls.name.getError("minlength").requiredLength }} characters
+      long.
+    </p>
+    }
+  </div>
+  <!-- Age -->
+  <div class="mb-3">
+    <label class="inline-block mb-2">Age</label>
+    <input
+      type="number"
+      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
     />
   </div>
   <!-- Email -->
@@ -18,14 +39,7 @@
       placeholder="Enter Email"
     />
   </div>
-  <!-- Age -->
-  <div class="mb-3">
-    <label class="inline-block mb-2">Age</label>
-    <input
-      type="number"
-      class="block w-full py-1.5 px-3 text-gray-200 border border-gray-400 transition duration-500 focus:outline-none rounded bg-transparent focus:border-indigo-400"
-    />
-  </div>
+
   <!-- Password -->
   <div class="mb-3">
     <label class="inline-block mb-2">Password</label>
