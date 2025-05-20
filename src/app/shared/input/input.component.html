@@ -19,4 +19,9 @@
 <p class="text-red-400">Value too low.</p>
 } @if (control().hasError('max')){
 <p class="text-red-400">Value too high.</p>
+} @if (control().hasError('pattern')){
+<p class="text-red-400">
+  Passwords must be at least 8 characters long, have 1 uppercase letter, 1
+  lowercase letter, and 1 number.
+</p>
 }}

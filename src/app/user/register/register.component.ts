@@ -16,8 +16,16 @@ export class RegisterComponent {
     name: ['', [Validators.required, Validators.minLength(3)]],
     age: [18, [Validators.required, Validators.min(18), Validators.max(120)]],
     email: ['', [Validators.required, Validators.email]],
-    password: [''],
-    confirmPassword: [''],
+    password: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+        ),
+      ],
+    ],
+    confirmPassword: ['', [Validators.required]],
     phoneNumber: [''],
   });
 }
