@@ -31,4 +31,8 @@ export class RegisterComponent {
       [Validators.required, Validators.minLength(9), Validators.maxLength(10)],
     ],
   });
+
+  register() {
+    console.log('Form submitted');
+  }
 }
