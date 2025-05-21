@@ -26,6 +26,9 @@ export class RegisterComponent {
       ],
     ],
     confirmPassword: ['', [Validators.required]],
-    phoneNumber: ['', [Validators.required, Validators.minLength(9), Validators.maxLength(10)]],
+    phoneNumber: [
+      '',
+      [Validators.required, Validators.minLength(9), Validators.maxLength(10)],
+    ],
   });
 }
