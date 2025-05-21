@@ -4,6 +4,7 @@
   [placeholder]="placeholder()"
   [formControl]="control()"
   [mask]="format()"
+  [dropSpecialCharacters]="false"
 />
 @if(control().touched && control().dirty) { @if (control().hasError("required"))
 {
@@ -25,4 +26,4 @@
   Passwords must be at least 8 characters long, have 1 uppercase letter, 1
   lowercase letter, and 1 number.
 </p>
-}}
+} }
