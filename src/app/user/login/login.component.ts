@@ -13,4 +13,10 @@ export class LoginComponent {
     email: '',
     password: '',
   };
+
+  submitted = false;
+
+  onSubmit() {
+    this.submitted = true;
+  }
 }
