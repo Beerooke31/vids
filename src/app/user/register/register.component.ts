@@ -3,6 +3,8 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +14,8 @@ import { AlertComponent } from '../../shared/alert/alert.component';
 })
 export class RegisterComponent {
   fb = inject(FormBuilder);
+  #auth = inject(Auth);
+  #firestore = inject(Firestore);
 
   form = this.fb.nonNullable.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
@@ -36,10 +40,41 @@ export class RegisterComponent {
   showAlert = signal(false);
   alertMsg = signal('Please wait! Your account is being created.');
   alertColour = signal('blue');
+  inSubmission = signal(false);
 
-  register() {
+  async register() {
     this.showAlert.set(true);
     this.alertMsg.set('Please wait! Your account is being created.');
     this.alertColour.set('blue');
+    this.inSubmission.set(true);
+
+    const { email, password } = this.form.getRawValue();
+    try {
+      const userCred = await createUserWithEmailAndPassword(
+        this.#auth,
+        email,
+        password
+      );
+
+      await addDoc(collection(this.#firestore, 'users'), {
+        name: this.form.getRawValue().name,
+        email: this.form.getRawValue().email,
+        age: this.form.getRawValue().age,
+        phoneNumber: this.form.getRawValue().phoneNumber,
+      });
+      console.log(userCred);
+    } catch (err) {
+      console.error(err);
+
+      this.alertMsg.set(
+        'An unexpected error occurred! Please try again later.'
+      );
+      this.alertColour.set('red');
+      this.inSubmission.set(false);
+      return;
+    }
+
+    this.alertMsg.set('Success! Your account has been created.');
+    this.alertColour.set('green');
   }
 }

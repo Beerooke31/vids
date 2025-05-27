@@ -7,6 +7,7 @@ import { RegisterComponent } from '../register/register.component';
 
 @Component({
   selector: 'app-auth-modal',
+  standalone: true,
   imports: [
     ModalComponent,
     TabsContainerComponent,
