@@ -1,6 +1,17 @@
 import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
-import { Firestore, collection, addDoc } from '@angular/fire/firestore';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  authState,
+} from '@angular/fire/auth';
+import {
+  Firestore,
+  collection,
+  addDoc,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import IUser from '../models/user.model';
 
 @Injectable({
@@ -9,8 +20,7 @@ import IUser from '../models/user.model';
 export class AuthService {
   #auth = inject(Auth);
   #firestore = inject(Firestore);
-
-  constructor() {}
+  authState$ = authState(this.#auth);
 
   async createUser(userData: IUser) {
     const userCred = await createUserWithEmailAndPassword(
@@ -19,12 +29,16 @@ export class AuthService {
       userData.password
     );
 
-    await addDoc(collection(this.#firestore, 'users'), {
+    await setDoc(doc(this.#firestore, 'users', userCred.user.uid), {
       name: userData.name,
       email: userData.email,
       age: userData.age,
       phoneNumber: userData.phoneNumber,
     });
+    updateProfile(userCred.user, {
+      displayName: userData.name,
+    });
+
     console.log(userCred);
   }
 }
