@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
+  auth = inject(Auth);
   credentials = {
     email: '',
     password: '',
@@ -16,7 +19,15 @@ export class LoginComponent {
 
   submitted = false;
 
-  onSubmit() {
-    this.submitted = true;
+  async login() {
+    try {
+      signInWithEmailAndPassword(
+        this.auth,
+        this.credentials.email,
+        this.credentials.password
+      );
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
