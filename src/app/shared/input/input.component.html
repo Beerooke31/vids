@@ -25,4 +25,6 @@
   Passwords must be at least 8 characters long, have 1 uppercase letter, 1
   lowercase letter, and 1 number.
 </p>
-} }
+} @if (control().hasError('noMatch')){
+<p class="text-red-400">Passwords do not match.</p>
+}}
