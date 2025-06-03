@@ -1,4 +1,7 @@
 import { ValidationErrors, AbstractControl, ValidatorFn } from '@angular/forms';
+import { Auth, fetchSignInMethodsForEmail } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { AsyncValidator } from '@angular/forms';
 
 export function Match(
   controlName: string,
@@ -19,4 +22,15 @@ export function Match(
 
     return error;
   };
+}
+
+@Injectable()
+class EmailTaken implements AsyncValidator {
+  auth = inject(Auth);
+
+  validate(control: AbstractControl): Promise<ValidationErrors | null> {
+    return fetchSignInMethodsForEmail(this.auth, control.value).then(
+      (response) => (response.length ? { emailTaken: true } : null)
+    );
+  }
 }
