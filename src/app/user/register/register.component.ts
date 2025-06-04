@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { InputComponent } from '../../shared/input/input.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { AuthService } from '../../services/auth.service';
-import { Match } from '../validators';
+import { Match, EmailTaken } from '../validators';
 
 @Component({
   selector: 'app-register',
@@ -15,12 +15,17 @@ import { Match } from '../validators';
 export class RegisterComponent {
   fb = inject(FormBuilder);
   auth = inject(AuthService);
+  emailTaken = inject(EmailTaken);
 
   form = this.fb.nonNullable.group(
     {
       name: ['', [Validators.required, Validators.minLength(3)]],
       age: [18, [Validators.required, Validators.min(18), Validators.max(120)]],
-      email: ['', [Validators.required, Validators.email]],
+      email: [
+        '',
+        [Validators.required, Validators.email],
+        [this.emailTaken.validate],
+      ],
       password: [
         '',
         [

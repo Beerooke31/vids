@@ -24,13 +24,15 @@ export function Match(
   };
 }
 
-@Injectable()
-class EmailTaken implements AsyncValidator {
+@Injectable({
+  providedIn: 'root',
+})
+export class EmailTaken implements AsyncValidator {
   auth = inject(Auth);
 
-  validate(control: AbstractControl): Promise<ValidationErrors | null> {
+  validate = (control: AbstractControl): Promise<ValidationErrors | null> => {
     return fetchSignInMethodsForEmail(this.auth, control.value).then(
       (response) => (response.length ? { emailTaken: true } : null)
     );
-  }
+  };
 }
